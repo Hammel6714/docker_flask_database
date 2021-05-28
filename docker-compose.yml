@@ -1,7 +1,6 @@
-version: '3.9'
+version: "3.3"
 
 services:
-
   nginx:
     container_name: nginx
     build: nginx/
@@ -9,6 +8,8 @@ services:
       - "80:80"
     networks:
       internal_routes:
+        aliases:
+          - nginx
   
   rabbitmq_create_user:
     image: rabbitmq 
@@ -20,14 +21,16 @@ services:
           - rabbitmq
 
   create_user:
-    container_name: flask
+    container_name: create_user
     build: flask
     ports:
       - "5000:5000"
     networks:
       internal_routes:
+        aliases:
+          - create_user
 
-   list_user:
+  list_user:
     container_name: api_luser
     build: list_user/
     links:
