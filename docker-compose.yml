@@ -38,6 +38,14 @@ services:
         aliases:
           - list_user
 
+  login:
+    container_name: login
+    build: login/
+    networks:
+      internal_routes:
+        aliases:
+          - login
+
   data:
     build: data/
     depends_on:

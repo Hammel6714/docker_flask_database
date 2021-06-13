@@ -2,6 +2,12 @@ import pika
 import time
 import logging
 import warnings
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+
+conn = MongoClient("mongodb://rs1:27041/") 
+db = conn.test
+collection = db.col
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
@@ -16,6 +22,9 @@ def callback(ch, method, properties, body):
     message = body.decode("utf-8") 
     logging.info('receive messages:' + message)
     time.sleep(body.count(b'.'))
+    
+    dimessage = eval(message)
+    collection.insert_one(dimessage)
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
 

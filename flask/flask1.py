@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify, make_response, json,
 import pika
 import logging
 import warnings
+import publisher
+
 
 from flasgger import Swagger
 from flasgger import swag_from
@@ -36,6 +38,8 @@ def create_user():
 
     message = json.dumps(message)
     logging.info('message:', message)
+    
+    publisher.publisher(message)
 
     channel.basic_publish(
         exchange='',

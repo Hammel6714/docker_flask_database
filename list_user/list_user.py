@@ -6,6 +6,13 @@ import warnings
 from flasgger import Swagger
 from flasgger import swag_from
 
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+
+conn = MongoClient("mongodb://rs2:27042/")
+db = conn.test
+collection = db.col
+
 app = Flask(__name__)
 
 swagger = Swagger(app)
@@ -16,14 +23,12 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 @app.route('/list_user', methods=['GET'])
 @app.route('/', methods=['GET'])
 @swag_from('apidocs/api_list_user.yml')
-def create_user():
 
-    res = dict()
-    res['username_1'] = 'Alice'
-    res['username_2'] = 'Bob'
-    res['username_3'] = 'Cindy'
-    res = make_response(jsonify(res), 200)
-    return res
+def list_user():
+    user = collection.find({})
+    data = [d for d in user]
+    sd = ",".join('%s' %id for id in data)
+    return sd
 
 @app.route('/')
 def index():
