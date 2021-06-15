@@ -43,7 +43,7 @@ def login():
             dimessage = eval(message)
 
             if collection.find_one(dimessage) != None:
-                return "<h1>Success</h1>"
+                return render_template('computer.html')
             else:
                 return "<h1>Fail</h1>"
     else:
