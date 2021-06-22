@@ -39,8 +39,8 @@ def create_user():
     message = json.dumps(message)
     logging.info('message:', message)
     
-    publisher.publisher(message)
-
+    #publisher.publisher(message)
+    
     channel.basic_publish(
         exchange='',
         routing_key='task_queue',
@@ -49,7 +49,7 @@ def create_user():
     )
 
     connection.close()
-
+    
     res = dict()
     res['success'] = True
     res['message'] = 'Create user successed, your username=' + username
